@@ -70,7 +70,9 @@ public class FolderPopUpWindow extends PopupWindow implements View.OnClickListen
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                if (onItemClickListener != null) onItemClickListener.onItemClick(adapterView, view, position, l);
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(adapterView, view, position, l);
+                }
             }
         });
     }

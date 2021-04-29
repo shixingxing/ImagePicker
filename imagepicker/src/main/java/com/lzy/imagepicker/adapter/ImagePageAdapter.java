@@ -1,14 +1,15 @@
 package com.lzy.imagepicker.adapter;
 
 import android.app.Activity;
-import android.support.v4.view.PagerAdapter;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.viewpager.widget.PagerAdapter;
+
 import com.lzy.imagepicker.ImagePicker;
-import com.lzy.imagepicker.util.Utils;
 import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.util.Utils;
 
 import java.util.ArrayList;
 
@@ -59,7 +60,9 @@ public class ImagePageAdapter extends PagerAdapter {
         photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
-                if (listener != null) listener.OnPhotoTapListener(view, x, y);
+                if (listener != null) {
+                    listener.OnPhotoTapListener(view, x, y);
+                }
             }
         });
         container.addView(photoView);

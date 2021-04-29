@@ -2,11 +2,12 @@ package com.lzy.imagepickerdemo.wxdemo;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -53,8 +54,11 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
 
     public List<ImageItem> getImages() {
         //由于图片未选满时，最后一张显示添加图片，因此这个方法返回真正的已选图片
-        if (isAdded) return new ArrayList<>(mData.subList(0, mData.size() - 1));
-        else return mData;
+        if (isAdded) {
+            return new ArrayList<>(mData.subList(0, mData.size() - 1));
+        } else {
+            return mData;
+        }
     }
 
     public ImagePickerAdapter(Context mContext, List<ImageItem> data, int maxImgCount) {
@@ -105,7 +109,9 @@ public class ImagePickerAdapter extends RecyclerView.Adapter<ImagePickerAdapter.
 
         @Override
         public void onClick(View v) {
-            if (listener != null) listener.onItemClick(v, clickPosition);
+            if (listener != null) {
+                listener.onItemClick(v, clickPosition);
+            }
         }
     }
 }

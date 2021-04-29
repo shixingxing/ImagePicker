@@ -3,7 +3,6 @@ package com.lzy.imagepicker.ui;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.text.format.Formatter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Toast;
+
+import androidx.viewpager.widget.ViewPager;
 
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.R;
@@ -138,8 +139,9 @@ public class ImagePreviewActivity extends ImagePreviewBaseActivity implements Im
 
         if (mCbOrigin.isChecked()) {
             long size = 0;
-            for (ImageItem imageItem : selectedImages)
+            for (ImageItem imageItem : selectedImages) {
                 size += imageItem.size;
+            }
             String fileSize = Formatter.formatFileSize(this, size);
             mCbOrigin.setText(getString(R.string.ip_origin_size, fileSize));
         }
@@ -182,8 +184,9 @@ public class ImagePreviewActivity extends ImagePreviewBaseActivity implements Im
         if (id == R.id.cb_origin) {
             if (isChecked) {
                 long size = 0;
-                for (ImageItem item : selectedImages)
+                for (ImageItem item : selectedImages) {
                     size += item.size;
+                }
                 String fileSize = Formatter.formatFileSize(this, size);
                 isOrigin = true;
                 mCbOrigin.setText(getString(R.string.ip_origin_size, fileSize));
