@@ -3,19 +3,21 @@ package com.lzy.imagepicker.ui;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.lzy.imagepicker.util.BitmapUtil;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.R;
 import com.lzy.imagepicker.bean.ImageItem;
+import com.lzy.imagepicker.util.BitmapUtil;
 import com.lzy.imagepicker.view.CropImageView;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -59,7 +61,7 @@ public class ImageCropActivity extends ImageBaseActivity implements View.OnClick
         mOutputY = imagePicker.getOutPutY();
         mIsSaveRectangle = imagePicker.isSaveRectangle();
         mImageItems = imagePicker.getSelectedImages();
-        String imagePath = mImageItems.get(0).path;
+        Uri uri = mImageItems.get(0).uri;
 
         mCropImageView.setFocusStyle(imagePicker.getStyle());
         mCropImageView.setFocusWidth(imagePicker.getFocusWidth());
@@ -68,14 +70,26 @@ public class ImageCropActivity extends ImageBaseActivity implements View.OnClick
         //缩放图片
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(imagePath, options);
+        try {
+            BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         options.inSampleSize = calculateInSampleSize(options, displayMetrics.widthPixels, displayMetrics.heightPixels);
         options.inJustDecodeBounds = false;
-        mBitmap = BitmapFactory.decodeFile(imagePath, options);
+        try {
+            mBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri), null, options);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 //        mCropImageView.setImageBitmap(mBitmap);
         //设置默认旋转角度
-        mCropImageView.setImageBitmap(mCropImageView.rotate(mBitmap, BitmapUtil.getBitmapDegree(imagePath)));
+        try {
+            mCropImageView.setImageBitmap(mCropImageView.rotate(mBitmap, BitmapUtil.getBitmapDegree(getContentResolver().openInputStream(uri))));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
 //        mCropImageView.setImageURI(Uri.fromFile(new File(imagePath)));
     }
@@ -112,7 +126,7 @@ public class ImageCropActivity extends ImageBaseActivity implements View.OnClick
         //裁剪后替换掉返回数据的内容，但是不要改变全局中的选中数据
         mImageItems.remove(0);
         ImageItem imageItem = new ImageItem();
-        imageItem.path = file.getAbsolutePath();
+        imageItem.uri = Uri.fromFile(file);
         mImageItems.add(imageItem);
 
         Intent intent = new Intent();

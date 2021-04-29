@@ -4,17 +4,19 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import androidx.exifinterface.media.ExifInterface;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+
 
 /**
- *
  * Bitmap工具类，主要是解决拍照旋转的适配
- *
+ * <p>
  * Author: nanchen
  * Email: liushilin520@foxmail.com
  * Date: 2017-03-20  13:27
@@ -59,6 +61,24 @@ public class BitmapUtil {
     }
 
     /**
+     * 获取图片的旋转角度
+     *
+     * @param inputStream 图片绝对路径
+     * @return 图片的旋转角度
+     */
+    public static int getBitmapDegree(InputStream inputStream) {
+        int degree = 0;
+        try {
+            // 从指定路径下读取图片，并获取其EXIF信息
+            ExifInterface exifInterface = new ExifInterface(inputStream);
+            degree = exifInterface.getRotationDegrees();
+        } catch (IOException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        return degree;
+    }
+
+    /**
      * 将图片按照指定的角度进行旋转
      *
      * @param bitmap 需要旋转的图片
@@ -79,17 +99,18 @@ public class BitmapUtil {
 
     /**
      * 获取我们需要的整理过旋转角度的Uri
-     * @param activity  上下文环境
-     * @param path      路径
-     * @return          正常的Uri
+     *
+     * @param activity 上下文环境
+     * @param path     路径
+     * @return 正常的Uri
      */
-    public static Uri getRotatedUri(Activity activity, String path){
+    public static Uri getRotatedUri(Activity activity, String path) {
         int degree = BitmapUtil.getBitmapDegree(path);
-        if (degree != 0){
+        if (degree != 0) {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
-            Bitmap newBitmap = BitmapUtil.rotateBitmapByDegree(bitmap,degree);
-            return Uri.parse(MediaStore.Images.Media.insertImage(activity.getContentResolver(),newBitmap,null,null));
-        }else{
+            Bitmap newBitmap = BitmapUtil.rotateBitmapByDegree(bitmap, degree);
+            return Uri.parse(MediaStore.Images.Media.insertImage(activity.getContentResolver(), newBitmap, null, null));
+        } else {
             return Uri.fromFile(new File(path));
         }
     }
@@ -103,7 +124,7 @@ public class BitmapUtil {
      */
     public static Bitmap rotateBitmapByDegree(String path, int degree) {
         Bitmap bitmap = BitmapFactory.decodeFile(path);
-        return rotateBitmapByDegree(bitmap,degree);
+        return rotateBitmapByDegree(bitmap, degree);
     }
 
 }

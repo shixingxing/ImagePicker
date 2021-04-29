@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,7 @@ import com.lzy.imagepicker.util.Utils;
 import com.lzy.imagepicker.view.FolderPopUpWindow;
 import com.lzy.imagepicker.view.GridSpacingItemDecoration;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -304,7 +306,7 @@ public class ImageGridActivity extends ImageBaseActivity implements ImageDataSou
 //        mRecyclerAdapter.notifyItemChanged(position); // 17/4/21 fix the position while click img to preview
 //        mRecyclerAdapter.notifyItemChanged(position + (imagePicker.isShowCamera() ? 1 : 0));// 17/4/24  fix the position while click right bottom preview button
         for (int i = imagePicker.isShowCamera() ? 1 : 0; i < mRecyclerAdapter.getItemCount(); i++) {
-            if (mRecyclerAdapter.getItem(i).path != null && mRecyclerAdapter.getItem(i).path.equals(item.path)) {
+            if (mRecyclerAdapter.getItem(i).uri != null && mRecyclerAdapter.getItem(i).uri.equals(item.uri)) {
                 mRecyclerAdapter.notifyItemChanged(i);
                 return;
             }
@@ -355,7 +357,7 @@ public class ImageGridActivity extends ImageBaseActivity implements ImageDataSou
 //                }
 
                 ImageItem imageItem = new ImageItem();
-                imageItem.path = path;
+                imageItem.uri = Uri.fromFile(new File(path));
                 imagePicker.clearSelectedImages();
                 imagePicker.addSelectedImageItem(0, imageItem, true);
                 if (imagePicker.isCrop()) {
