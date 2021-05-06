@@ -261,9 +261,9 @@ public class ImagePicker {
         takePictureIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if (takePictureIntent.resolveActivity(activity.getPackageManager()) != null) {
             if (Utils.existSDCard()) {
-                takeImageFile = new File(Environment.getExternalStorageDirectory(), "/DCIM/camera/");
+                takeImageFile = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             } else {
-                takeImageFile = Environment.getDataDirectory();
+                takeImageFile = activity.getCacheDir();
             }
             takeImageFile = createFile(takeImageFile, "IMG_", ".jpg");
             if (takeImageFile != null) {
