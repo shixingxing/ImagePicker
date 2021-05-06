@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -61,6 +62,11 @@ public class ImageCropActivity extends ImageBaseActivity implements View.OnClick
         mOutputY = imagePicker.getOutPutY();
         mIsSaveRectangle = imagePicker.isSaveRectangle();
         mImageItems = imagePicker.getSelectedImages();
+        if (mImageItems == null || mImageItems.isEmpty()) {
+            Log.e(ImageCropActivity.class.getSimpleName(), "image error");
+            setResult(RESULT_CANCELED);
+            finish();
+        }
         Uri uri = mImageItems.get(0).uri;
 
         mCropImageView.setFocusStyle(imagePicker.getStyle());
