@@ -1,6 +1,7 @@
 package com.lzy.imagepicker;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -293,7 +294,11 @@ public class ImagePicker {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             }
         }
-        activity.startActivityForResult(takePictureIntent, requestCode);
+        try {
+            activity.startActivityForResult(takePictureIntent, requestCode);
+        } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -16,7 +16,7 @@
         android:fadingEdge="none"
         android:listSelector="@android:color/transparent"
         android:scrollbarStyle="outsideOverlay"
-        app:layoutManager="android.support.v7.widget.GridLayoutManager"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="4"
         tools:listitem="@layout/list_item_image"/>
 </RelativeLayout>
